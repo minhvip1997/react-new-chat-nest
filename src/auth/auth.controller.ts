@@ -6,12 +6,14 @@ import {
   Body,
   UsePipes,
   ValidationPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { Routes, Services } from '../utils/constants';
 import { IAuthService } from './auth';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import { IUserService } from 'src/user/user';
 import { instanceToPlain } from 'class-transformer';
+import { LocalAuthGuard } from './utils/Guards';
 
 @Controller(Routes.AUTH)
 export class AuthController implements IAuthService {
@@ -27,6 +29,7 @@ export class AuthController implements IAuthService {
     return instanceToPlain(await this.userService.createUser(createUserDto))
   }
   
+  @UseGuards(LocalAuthGuard)
   @Post('login')
   login(){
 
